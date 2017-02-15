@@ -1,0 +1,7 @@
+<%= simple_form_for [:backend, @user] do |f| %>
+  <%= f.input :name %>
+  <%= f.input :tax_id %>
+  <%= f.input :phone %>
+  <%= f.input :email %>
+  <%= f.submit '更新', class: "btn btn-primary" %>
+<% end %>

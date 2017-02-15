@@ -1,0 +1,7 @@
+<%= simple_form_for [:backend, product] do |f| %>
+  <%= f.input :name %>
+  <%= f.input :item_code %>
+  <%= f.input :start_rent %>
+  <%= f.submit class: "btn btn-primary" %>
+  <%= link_to '取消', backend_products_path(product), class: 'btn btn-default'%>
+<% end %>
