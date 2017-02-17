@@ -5,15 +5,12 @@
     <%= csrf_meta_tags %>
     <%= stylesheet_link_tag    'application', media: 'all' %>
     <%= render 'layouts/shared/shim' %>
-
   </head>
 
   <body>
     <%= render "public/common/navbar" %>
     <div class="container-fluid">
-      <% flash.each do |message_type, message| %>
-        <%= content_tag(:div, message, class: "alert alert-#{message_type}") %>
-      <% end %>
+      <%= flash_messages %>
       <%= yield %>
       <%= render "public/common/loginbox" %>
       <%= render "public/common/footer" %>

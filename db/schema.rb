@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170215165958) do
+ActiveRecord::Schema.define(version: 20170216103812) do
 
   create_table "clients", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string   "name"
@@ -18,11 +18,12 @@ ActiveRecord::Schema.define(version: 20170215165958) do
     t.string   "mail"
     t.string   "company"
     t.string   "mobile_phone"
-    t.string   "borrow_status"
+    t.integer  "borrow_status", default: 1
     t.string   "ring_id"
-    t.text     "id_photo",      limit: 65535
-    t.datetime "created_at",                  null: false
-    t.datetime "updated_at",                  null: false
+    t.string   "id_photo"
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "user_id"
   end
 
   create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
@@ -34,13 +35,15 @@ ActiveRecord::Schema.define(version: 20170215165958) do
     t.datetime "updated_at",  null: false
     t.string   "rent_status"
     t.string   "borrow_ring"
+    t.integer  "client_id"
+    t.integer  "user_id"
   end
 
   create_table "users", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string   "name"
     t.string   "tax_id"
     t.string   "phone"
-    t.string   "role"
+    t.integer  "role",                   default: 1
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
     t.string   "reset_password_token"

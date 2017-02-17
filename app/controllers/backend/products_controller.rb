@@ -2,19 +2,19 @@ class Backend::ProductsController < BackendController
   before_action :find_product, only: [:edit, :update, :destroy]
 
   def index
-    @products = Product.order('created_at DESC').page(params[:page]).per(10)
+    @products = current_user.products.order('created_at DESC').page(params[:page]).per(10)
   end
 
   def new
-    @product = Product.new
+    @product = current_user.products.new
   end
 
   def create
-    @product = Product.new(product_params)
+    @product =current_user.products.new(product_params)
     if @product.save
-      redirect_to backend_products_path(@product), flash: {success: '新增成功'}
+      redirect_to backend_products_path, flash: {success: '新增成功'}
     else
-      flash.now[:notice] = '產品新增失敗'
+      flash.now[:error] = '產品新增失敗'
       render 'new'
     end
   end
@@ -46,7 +46,7 @@ class Backend::ProductsController < BackendController
   end
 
   def product_params
-    params.require(:product).permit(:name, :item_code, :start_rent, :end_rent)
+    params.require(:product).permit(:name, :item_code, :start_rent, :end_rent, :user_id, :client_id)
   end
 
 end

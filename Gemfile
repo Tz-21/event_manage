@@ -32,6 +32,9 @@ gem 'devise'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'simple_form'
 gem 'kaminari'
+gem 'carrierwave', '~> 1.0'
+gem "mini_magick"
+
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
@@ -46,6 +49,8 @@ group :development, :test do
   gem 'byebug', platform: :mri
   gem 'better_errors'
   gem 'binding_of_caller'
+  gem 'pry'
+  gem 'pry-rails'
 end
 
 group :development do

@@ -7,9 +7,14 @@ Rails.application.routes.draw do
                                         unlocks: 'users/unlocks'
                                       }
   root "public#index"
+
   namespace :backend do
     resources :users, only: [:edit, :update]
     resources :products
   end
 
+  namespace :admin do
+    resources :users, only: [:edit, :update]
+    resources :clients
+  end
 end
