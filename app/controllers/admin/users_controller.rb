@@ -1,12 +1,9 @@
 class Admin::UsersController < AdminController
   before_action :find_user
 
-  def edit
-  end
-
   def update
     if @user.update_attributes user_params
-      redirect_to backend_products_path, flash: {succes: '新增成功'}
+      redirect_to admin_clients_path, flash: {succes: '新增成功'}
     else
       flash.now[:notice] = '資料更新失敗'
       render 'edit'

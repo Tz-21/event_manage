@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col-lg-6">
+    <section class="panel">
+      <div class="panel-body">
+        <%= simple_form_for [:backend, @product, @rental_record] do |f| %>
+          客戶手環id：<input type="text" name="ring_id"><br>
+          <%= f.input :start_rent, label: "租借時間"%>
+          <%= f.submit "送出", class: "btn btn-primary" %>
+          <%= link_to '取消', backend_products_path, class: 'btn btn-default'%>
+        <% end %>
+      </div>
+    </section>
+  </div>
+</div>

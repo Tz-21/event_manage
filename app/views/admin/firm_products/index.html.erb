@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-lg-12">
+    <section class="panel">
+      <div class="panel-body">
+        <header>
+          <h1><%= "#{@firm.name}的產品列表" %></h1>
+          <%= link_to '新增產品', new_admin_firm_firm_product_path, class: "btn btn-primary" %>
+          <%= link_to '廠商列表', admin_firms_path, class: "btn btn-info" %>
+        </header>
+        <%= form_tag admin_firm_firm_products_path, method: :get do %>
+          <%= text_field_tag :search, params[:search] %>
+          <%= submit_tag "搜尋", name: nil %>
+        <% end %>
+      </div>
+      <table class="table table-striped table-advance table-hover">
+        <thead>
+          <tr>
+            <th>產品名稱</th>
+            <th>商品代碼</th>
+            <th>開始租借時間</th>
+            <th>租借客戶名稱</th>
+            <th>客戶手環ID</th>
+            <th>功能</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @firm_products.each do |firm_product| %>
+            <tr>
+              <td><%= firm_product.name %></td>
+              <td><%= firm_product.item_code %></td>
+              <% if firm_product.rent? %>
+                <td><%= firm_product.rental_records.last&.start_rent %></td>
+                <td><%= firm_product.rental_records.last&.client.name %></td>
+                <td><%= firm_product.rental_records.last&.client.ring_id %></td>
+              <% else %>
+                <td>閒置中</td>
+                <td>閒置中</td>
+                <td>閒置中</td>
+              <% end %>
+              <td>
+                <%= link_to '編輯',  edit_admin_firm_firm_product_path(@firm, firm_product), class: "btn btn-primary" %>
+                <%= link_to '刪除',  admin_firm_firm_product_path(@firm, firm_product), method: :DELETE, class: "btn btn-danger" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= paginate @firm_products %>
+    </section>
+  </div>
+</div>

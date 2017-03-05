@@ -10,11 +10,16 @@ Rails.application.routes.draw do
 
   namespace :backend do
     resources :users, only: [:edit, :update]
-    resources :products
+    resources :products do
+      resources :rental_records, only: [:new, :create, :destroy]
+    end
   end
 
   namespace :admin do
     resources :users, only: [:edit, :update]
     resources :clients
+    resources :firms do
+      resources :firm_products
+    end
   end
 end

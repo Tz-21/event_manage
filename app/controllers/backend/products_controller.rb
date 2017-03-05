@@ -2,7 +2,11 @@ class Backend::ProductsController < BackendController
   before_action :find_product, only: [:edit, :update, :destroy]
 
   def index
-    @products = current_user.products.order('created_at DESC').page(params[:page]).per(10)
+    if params[:search]
+      @products = current_user.products.joins('LEFT JOIN `rental_records` ON `rental_records`.`product_id` = `products`.`id` LEFT JOIN `clients` ON `clients`.`id` = `rental_records`.`client_id`').where("products.name LIKE ? OR products.item_code LIKE ? OR clients.ring_id like ?", "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%").group(:id).page(params[:page])
+    else
+      @products = current_user.products.order('created_at DESC').page(params[:page])
+    end
   end
 
   def new
@@ -10,11 +14,11 @@ class Backend::ProductsController < BackendController
   end
 
   def create
-    @product =current_user.products.new(product_params)
+    @product = current_user.products.new(product_params)
     if @product.save
       redirect_to backend_products_path, flash: {success: '新增成功'}
     else
-      flash.now[:error] = '產品新增失敗'
+      flash.now[:error] = @product.errors.full_messages.to_sentence
       render 'new'
     end
   end
@@ -24,19 +28,16 @@ class Backend::ProductsController < BackendController
 
   def update
     if @product.update_attributes product_params
-      redirect_to backend_products_path(@product), flash: {success: '更新成功'}
+      redirect_to backend_products_path, flash: {success: '更新成功'}
     else
-      flash.now[:notice] = '產品更新失敗'
+      flash.now[:notice] = @product.errors.full_messages.to_sentence
       render 'edit'
     end
   end
 
   def destroy
-    if @product.destroy
-      flash.now[:notice] = '刪除成功'
-    else
-      flash.now[:notice] = '刪除失敗'
-    end
+    @product.destroy
+    redirect_to backend_products_path, flash: {success: '刪除成功'}
   end
 
   private
@@ -46,7 +47,7 @@ class Backend::ProductsController < BackendController
   end
 
   def product_params
-    params.require(:product).permit(:name, :item_code, :start_rent, :end_rent, :user_id, :client_id)
+    params.require(:product).permit(:name, :item_code, :rent_status, :user_id)
   end
 
 end

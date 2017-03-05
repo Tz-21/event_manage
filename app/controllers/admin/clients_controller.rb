@@ -2,7 +2,11 @@ class Admin::ClientsController < AdminController
   before_action :find_client, only: [:edit, :update, :destroy]
 
   def index
-    @clients = current_user.clients.order('created_at DESC').page(params[:page]).per(10)
+    if params[:search]
+      @clients = current_user.clients.where('name LIKE ? OR id_number LIKE ? OR mobile_phone LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%").page(params[:page])
+    else
+      @clients = current_user.clients.order('created_at DESC').page(params[:page])
+    end
   end
 
   def new
@@ -10,11 +14,11 @@ class Admin::ClientsController < AdminController
   end
 
   def create
-    @client = current_user.clients.new(client_params)
+    @client = current_user.clients.new client_params
     if @client.save
       redirect_to admin_clients_path, flash: {success: '新增成功'}
     else
-      flash.now[:notice] = '客戶新增失敗'
+      flash.now[:notice] = @client.errors.full_messages.to_sentence
       render 'new'
     end
   end
@@ -23,20 +27,17 @@ class Admin::ClientsController < AdminController
   end
 
   def update
-    if @client.update_attributes(client_params)
-      redirect_to admin_clients_path(@client), flash: {success: '編輯成功'}
+    if @client.update_attributes client_params
+      redirect_to admin_clients_path, flash: {success: '編輯成功'}
     else
+       @client.errors.full_messages.to_sentence
       render 'edit'
     end
   end
 
   def destroy
-    if @client.destroy
-      flash.now[:notice] = '刪除成功'
-    else
-      flash.now[:notice] = '刪除失敗'
-    end
-    redirect_to admin_clients_path @client
+    @client.destroy
+    redirect_to admin_clients_path, flash: {success: '刪除成功'}
   end
 
   private
