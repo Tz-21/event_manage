@@ -7,13 +7,14 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-      <!-- 這裡要記得寫admin判斷式來轉到admin的user path -->
-      <% if current_user.present?%>
-        <li><%= link_to '資料設定',edit_backend_user_path(current_user)%></li>
-      <% end %>
         <% if current_user %>
-          <li><%= link_to('登出', destroy_user_session_path, :method => :delete) %></li>
-          <li><%= link_to('修改密碼', edit_registration_path(:user)) %></li>
+          <li><%= link_to '客戶列表', admin_clients_path if current_user.admin? %></li>
+          <li><%= link_to '廠商列表', admin_firms_path if current_user.admin? %></li>
+          <li><%= link_to '資料設定', edit_admin_user_path(current_user) if current_user.admin? %></li>
+          <li><%= link_to '產品列表', backend_products_path if current_user.firm? %></li>
+          <li><%= link_to '資料設定', edit_backend_user_path(current_user) if current_user.firm? %></li>
+          <li><%= link_to('登出', destroy_user_session_path, method: :delete) %></li>
+          <li><%= link_to('修改密碼', edit_registration_path(current_user)) %></li>
         <% else %>
           <li><%= link_to('註冊', new_registration_path(:user)) %></li>
           <li><%= link_to('登入', new_session_path(:user)) %></li>
