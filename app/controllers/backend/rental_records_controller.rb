@@ -7,12 +7,16 @@ class Backend::RentalRecordsController <BackendController
 
   def create
     if @rental_record = @product.rental_records.create_with_client(rental_record_params, params[:ring_id])
-      Client.find_by(ring_id: params[:ring_id]).product_full!
-      @product.rent!
-      redirect_to backend_products_path, flash: {success: '租借成功'}
+      if Client.find_by(ring_id: params[:ring_id]).product_full?
+        redirect_to backend_products_path, flash: {error: '此客戶有商品尚未歸還，無法租借！'}
+      else
+        Client.find_by(ring_id: params[:ring_id]).product_full!
+        @product.rent!
+        redirect_to backend_products_path, flash: {success: '租借成功'}
+      end
     else
-      flash.now[:notice] = @rental_record.errors.full_messages.to_sentence
-      render 'new'
+      redirect_back(fallback_location: new_backend_product_rental_record_path)
+      flash[:error] = "此手環ID不存在"
     end
   end
 

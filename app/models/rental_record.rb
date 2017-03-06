@@ -4,7 +4,7 @@ class RentalRecord < ApplicationRecord
 
   def self.create_with_client(params, ring_id)
     client = Client.find_by(ring_id: ring_id)
-    return false if client.nil?
+    return nil if client.nil?
     params.merge!(client_id: client.id)
     create(params)
   end
