@@ -41,7 +41,9 @@
                   <%= link_to '歸還', backend_product_rental_record_path(product, product.rental_records.last), method: :delete, class: "btn btn-info" %>
                 <% end %>
                 <%= link_to '編輯', edit_backend_product_path(product), class: "btn btn-primary" %>
-                <%= link_to '刪除', backend_product_path(product), method: :DELETE, class: "btn btn-danger" %>
+                <% if product.free? %>
+                  <%= link_to '刪除', backend_product_path(product), method: :DELETE, class: "btn btn-danger" %>
+                <% end %>
               </td>
             </tr>
           <% end %>

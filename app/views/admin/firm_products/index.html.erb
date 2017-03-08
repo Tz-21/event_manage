@@ -39,7 +39,9 @@
               <% end %>
               <td>
                 <%= link_to '編輯',  edit_admin_firm_firm_product_path(@firm, firm_product), class: "btn btn-primary" %>
-                <%= link_to '刪除',  admin_firm_firm_product_path(@firm, firm_product), method: :DELETE, class: "btn btn-danger" %>
+                <% if firm_product.free? %>
+                  <%= link_to '刪除',  admin_firm_firm_product_path(@firm, firm_product), method: :DELETE, class: "btn btn-danger" %>
+                <% end %>
               </td>
             </tr>
           <% end %>
