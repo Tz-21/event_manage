@@ -7,5 +7,5 @@ class Client < ApplicationRecord
   belongs_to :user
   has_many :rental_records
 
-  validates :ring_id, uniqueness: true
+  validates :ring_id, uniqueness: { message: "手環ID已經被使用，請更換" }
 end
