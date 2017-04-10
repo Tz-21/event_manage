@@ -5,7 +5,7 @@ class Admin::ClientsController < AdminController
     if params[:search]
       @clients = current_user.clients.where('name LIKE ? OR id_number LIKE ? OR mobile_phone LIKE ?', "%#{params[:search]}%", "%#{params[:search]}%", "%#{params[:search]}%").page(params[:page])
     else
-      @clients = current_user.clients.order('created_at DESC').page(params[:page])
+      @clients = current_user.clients.order('created_at ASC').page(params[:page])
     end
   end
 
