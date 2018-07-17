@@ -7,5 +7,6 @@ class AdminController < ApplicationController
   def admin_required
     redirect_back(fallback_location: root_path) unless current_user.admin?
   end
+  "hihi"
 
 end
